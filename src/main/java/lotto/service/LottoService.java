@@ -6,6 +6,7 @@ import lotto.domain.User;
 import lotto.utils.Utils;
 import lotto.validation.Validation;
 import lotto.view.InputView;
+import lotto.view.OutputView;
 
 import java.util.List;
 
@@ -15,10 +16,12 @@ import static camp.nextstep.edu.missionutils.Console.readLine;
  */
 public class LottoService {
     private User user;
-    private List<Lotto> lottos;
 
-    public LottoService(User user) {
-        this.user = user;
+    private static final int LOTTO_PRICE_UNIT = 1_000;
+
+    public void createLottos(){
+        buyLottos(moneyToCount(inputMoney()));
+
     }
 
     public int inputMoney(){
@@ -30,20 +33,20 @@ public class LottoService {
     private int moneyToCount(int money){
         Validation.validateMoneyRange(money);
         Validation.validateDivideMoney(money);
-        return money/1000;
+        return money/LOTTO_PRICE_UNIT;
     }
 
-    public List<Lotto> createLottos(int count){
+    public void buyLottos(int count){
+        this.user = new User(count);
         for(int i = 0; i < count; i++){
-            lottos.add(new Lotto(
-                    LottoGenerator.getRandomLottoNum()
-            ));
+            user.buyLotto(
+                    new Lotto(LottoGenerator.getRandomLottoNum())
+            );
         }
-        return lottos;
+        OutputView.buyLottoMessage(count);
+        OutputView.showBuyLottoList(user.getLottos());
     }
 
-    //todo 로또 유저에 넣음
-    private void setLottosInUser(List<Lotto> lottos){
-        this.user = new User(lottos);
-    }
+
+
 }
