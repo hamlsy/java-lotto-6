@@ -13,7 +13,12 @@ public class LottoController {
 
 
     //todo create input lotto(before lotto) method
-
+    public void createLotto(){
+        //Lotto Service 코드
+        // 금액 입력
+        // 로또 구매( 발급 )
+        //
+    }
 
     //todo create start lotto method
 
