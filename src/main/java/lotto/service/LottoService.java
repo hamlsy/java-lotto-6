@@ -10,8 +10,11 @@ import lotto.validation.Validation;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static camp.nextstep.edu.missionutils.Console.readLine;
 /**
@@ -55,7 +58,8 @@ public class LottoService {
 
     //생성기 메서드
     private List<Integer> getRandomLottoNum(){
-        return Randoms.pickUniqueNumbersInRange(LOTTO_MIN_NUM, LOTTO_MAX_NUM, LOTTO_PICK_NUM);
+        return Randoms.pickUniqueNumbersInRange(LOTTO_MIN_NUM, LOTTO_MAX_NUM, LOTTO_PICK_NUM).stream()
+                .sorted().collect(Collectors.toList());
     }
 
     //로또 게임 시작
@@ -90,11 +94,18 @@ public class LottoService {
 
     //todo 결과 출력 단계, 당첨 통계 및 수익률 계산 부분
     public void resultLotto(){
+        //로또 결과 출력
+        HashMap<Rank, Integer> resultMap = getWinningResult(user.getLottos());
+        for(Rank rank : Rank.values()){
+            if(rank.getCorrectCount() >= 3){
+                OutputView.showWinningResult(rank, resultMap.get(rank));
+            }
+        }
 
+        // 수익률 출력
     }
 
-    //todo 당첨 계산
-    public HashMap<Rank, Integer> getWinningResult(List<Lotto> lottos){
+    private HashMap<Rank, Integer> getWinningResult(List<Lotto> lottos){
         HashMap<Rank, Integer> resultMap = Rank.initRank();
         for(Lotto lotto : lottos){
             Rank rank = getRank(lottoGame, lotto);
@@ -103,7 +114,7 @@ public class LottoService {
         return resultMap;
     }
 
-    public Rank getRank(LottoGame lottoGame, Lotto lotto){
+    private Rank getRank(LottoGame lottoGame, Lotto lotto){
         List<Integer> winningNumbers = lottoGame.getWinningNumbers();
         int bonusNumber = lottoGame.getBonusNumber();
 

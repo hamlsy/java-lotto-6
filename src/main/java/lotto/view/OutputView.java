@@ -2,6 +2,7 @@ package lotto.view;
 
 import lotto.domain.Lotto;
 import lotto.domain.Rank;
+import lotto.utils.Utils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  */
 public class OutputView {
     private static final String BUY_LOTTO_MESSAGE = "%d개를 구매했습니다. \n";
+    private static final String WINNING_RESULT_MESSAGE = "%d개 일치 (%s원) - %d개\n";
 
     public static void buyLottoMessage(int num){
         System.out.printf(BUY_LOTTO_MESSAGE, num);
@@ -22,7 +24,8 @@ public class OutputView {
     }
 
     //당첨 결과 출력
-    public static void showWinningResult(HashMap<Rank, Integer> resultMap){
-
+    public static void showWinningResult(Rank rank, int winCount){
+        System.out.printf(WINNING_RESULT_MESSAGE, rank.getCorrectCount(),
+                Utils.longToFormattedNumber(rank.getPrize()), winCount);
     }
 }

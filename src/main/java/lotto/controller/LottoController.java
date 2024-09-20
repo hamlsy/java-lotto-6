@@ -18,6 +18,7 @@ public class LottoController {
         // start lotto
         startLotto();
         // result lotto
+        resultLotto();
     }
 
 
@@ -35,6 +36,8 @@ public class LottoController {
     }
 
     //todo create result lotto method
-
+    public void resultLotto(){
+        lottoService.resultLotto();
+    }
 
 }

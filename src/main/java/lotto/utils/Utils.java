@@ -21,4 +21,8 @@ public class Utils {
         return Arrays.stream(input.split(",")).map(str -> stringToInteger(str))
                 .collect(Collectors.toList());
     }
+
+    public static String longToFormattedNumber(long number){
+        return String.format("%,d", number);
+    }
 }
