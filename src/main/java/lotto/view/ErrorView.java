@@ -9,6 +9,7 @@ public class ErrorView {
     private static final String MONEY_DIVIDE_ERROR_MESSAGE = "[ERROR] 구입 금액은 1000원 단위로 가능합니다.";
     private static final String LOTTO_NUMBER_RANGE_ERROR = "[ERROR] 로또 번호는 1 이상 45 이하여야 합니다.";
     private static final String LOTTO_WINNING_NUMBER_SIZE_ERROR = "[ERROR] 당첨 번호는 반드시 6개여야 합니다.";
+    private static final String DUPLICATED_BONUS_NUMBER_IN_WINNING_NUMBERS = "[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.";
 
     public static void stringToIntegerError(){
         System.out.println(STRING_TO_INTEGER_ERROR_MESSAGE);
@@ -28,5 +29,9 @@ public class ErrorView {
 
     public static void lottoWinningNumberSizeError(){
         System.out.println(LOTTO_WINNING_NUMBER_SIZE_ERROR);
+    }
+
+    public static void duplicatedBonusNumberInWinningNumbers(){
+        System.out.println(DUPLICATED_BONUS_NUMBER_IN_WINNING_NUMBERS);
     }
 }

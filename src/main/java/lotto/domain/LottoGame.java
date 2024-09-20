@@ -10,4 +10,6 @@ public class LottoGame {
         this.winningNumbers = winningNumbers;
         this.bonusNumber = bonusNumber;
     }
+
+
 }

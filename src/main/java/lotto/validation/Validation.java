@@ -9,7 +9,7 @@ public class Validation {
     private static final int LOTTO_PRICE_UNIT = 1_000;
 
     public static void validateStringToInteger(String str){
-        if(!str.chars().allMatch(Character::isDigit)){
+        if(!str.chars().allMatch(Character::isDigit) || str.equals("")){
             ErrorView.stringToIntegerError();
             throw new IllegalArgumentException();
         }
@@ -51,5 +51,10 @@ public class Validation {
         winningNumbers.forEach(winningNumber -> validateLottoNumberRange(winningNumber));
    }
 
+   public static void validateBonusNumberDuplecatedInWinningNumber(int bonusNumeber, List<Integer> winningNumbers){
+        if(winningNumbers.contains(bonusNumeber)){
+            ErrorView.duplicatedBonusNumberInWinningNumbers();
+        }
+   }
 
 }

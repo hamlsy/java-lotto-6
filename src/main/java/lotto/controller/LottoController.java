@@ -16,7 +16,7 @@ public class LottoController {
         // input lotto
         createLottos();
         // start lotto
-        //startLotto();
+        startLotto();
         // result lotto
     }
 
@@ -30,7 +30,8 @@ public class LottoController {
     //todo create start lotto method
     public void startLotto(){
         //Lotto 시작 코드
-       //lottoService.startLotto();
+       lottoService.startLotto();
+
     }
 
     //todo create result lotto method

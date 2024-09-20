@@ -2,6 +2,7 @@ package lotto.service;
 
 import camp.nextstep.edu.missionutils.Randoms;
 import lotto.domain.Lotto;
+import lotto.domain.LottoGame;
 import lotto.domain.User;
 import lotto.utils.Utils;
 import lotto.validation.Validation;
@@ -16,6 +17,8 @@ import static camp.nextstep.edu.missionutils.Console.readLine;
  */
 public class LottoService {
     private User user;
+    private LottoGame lottoGame;
+    private List<Integer> winningNumbers;
 
     private static final int LOTTO_MIN_NUM = 1;
     private static final int LOTTO_MAX_NUM = 45;
@@ -54,26 +57,32 @@ public class LottoService {
         return Randoms.pickUniqueNumbersInRange(LOTTO_MIN_NUM, LOTTO_MAX_NUM, LOTTO_PICK_NUM);
     }
 
-
-    //todo start 단계, 당첨번호 입력, 보너스 번호 입력 부분
+    //로또 게임 시작
     public void startLotto(){
-
+        createLottoGame(inputWinningNumbers(), inputBonusNumber());
     }
 
     private List<Integer> inputWinningNumbers(){
+        InputView.printInputWinningNumbersMessage();
         String input = readLine().trim();
-        List<Integer> winningNumbers = Utils.stringToIntegerList(input);
+        this.winningNumbers = Utils.stringToIntegerList(input);
         Validation.validateWinningNumbers(winningNumbers);
 
-        return null;
+        return winningNumbers;
+    }
+
+    private void createLottoGame(List<Integer> winningNumbers, int bonusNumber){
+        this.lottoGame = new LottoGame(winningNumbers, bonusNumber);
     }
 
     private int inputBonusNumber(){
+        InputView.printInputBonusNumberMessage();
         String input = readLine().trim();
-        //todo 숫자인가?
-        // 1~45 범위를 가지는가?
-        // 당첨 번호랑 겹치는가?
-        return 0;
+        int bonusNumber = Utils.stringToInteger(input);
+        Validation.validateLottoNumberRange(bonusNumber);
+        Validation.validateBonusNumberDuplecatedInWinningNumber(bonusNumber, winningNumbers);
+
+        return bonusNumber;
     }
 
     //todo 결과 출력 단계, 당첨 통계 및 수익률 계산 부분
