@@ -3,12 +3,14 @@ package lotto.service;
 import camp.nextstep.edu.missionutils.Randoms;
 import lotto.domain.Lotto;
 import lotto.domain.LottoGame;
+import lotto.domain.Rank;
 import lotto.domain.User;
 import lotto.utils.Utils;
 import lotto.validation.Validation;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
+import java.util.HashMap;
 import java.util.List;
 
 import static camp.nextstep.edu.missionutils.Console.readLine;
@@ -18,7 +20,6 @@ import static camp.nextstep.edu.missionutils.Console.readLine;
 public class LottoService {
     private User user;
     private LottoGame lottoGame;
-    private List<Integer> winningNumbers;
 
     private static final int LOTTO_MIN_NUM = 1;
     private static final int LOTTO_MAX_NUM = 45;
@@ -59,13 +60,16 @@ public class LottoService {
 
     //로또 게임 시작
     public void startLotto(){
-        createLottoGame(inputWinningNumbers(), inputBonusNumber());
+        List<Integer> winningNumbers = inputWinningNumbers();
+        int bonusNumber = inputBonusNumber();
+        Validation.validateBonusNumberDuplecatedInWinningNumber(bonusNumber, winningNumbers);
+        createLottoGame(winningNumbers, bonusNumber);
     }
 
     private List<Integer> inputWinningNumbers(){
         InputView.printInputWinningNumbersMessage();
         String input = readLine().trim();
-        this.winningNumbers = Utils.stringToIntegerList(input);
+        List<Integer> winningNumbers = Utils.stringToIntegerList(input);
         Validation.validateWinningNumbers(winningNumbers);
 
         return winningNumbers;
@@ -80,7 +84,6 @@ public class LottoService {
         String input = readLine().trim();
         int bonusNumber = Utils.stringToInteger(input);
         Validation.validateLottoNumberRange(bonusNumber);
-        Validation.validateBonusNumberDuplecatedInWinningNumber(bonusNumber, winningNumbers);
 
         return bonusNumber;
     }
@@ -90,4 +93,40 @@ public class LottoService {
 
     }
 
+    //todo 당첨 계산
+    public HashMap<Rank, Integer> getWinningResult(List<Lotto> lottos){
+        HashMap<Rank, Integer> resultMap = Rank.initRank();
+        for(Lotto lotto : lottos){
+            Rank rank = getRank(lottoGame, lotto);
+            resultMap.put(rank, resultMap.get(rank)+1);
+        }
+        return resultMap;
+    }
+
+    public Rank getRank(LottoGame lottoGame, Lotto lotto){
+        List<Integer> winningNumbers = lottoGame.getWinningNumbers();
+        int bonusNumber = lottoGame.getBonusNumber();
+
+        int correctCount = getCorrectCount(winningNumbers, lotto.getNumbers());
+        int bonusCount = getBonusCount(bonusNumber, lotto.getNumbers());
+        return Rank.getRank(correctCount, bonusCount);
+    }
+
+    private int getCorrectCount(List<Integer> winningNumbers, List<Integer> lottoNumbers){
+        int correctCount = 0;
+        for(int winningNumber : winningNumbers){
+            if(lottoNumbers.contains(winningNumber)){
+                correctCount++;
+            }
+        }
+        return correctCount;
+    }
+
+    private int getBonusCount(int bonusNumber, List<Integer> lottoNumbers){
+        int bonusCount = 0;
+        if(lottoNumbers.contains(bonusCount)){
+            bonusCount = 1;
+        }
+        return bonusCount;
+    }
 }

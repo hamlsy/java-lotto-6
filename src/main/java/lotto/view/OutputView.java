@@ -1,7 +1,9 @@
 package lotto.view;
 
 import lotto.domain.Lotto;
+import lotto.domain.Rank;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -17,5 +19,10 @@ public class OutputView {
     public static void showBuyLottoList(List<Lotto> lottos){
         lottos.stream().map(l -> l.getNumbers().toString())
                 .forEach(System.out::println);
+    }
+
+    //당첨 결과 출력
+    public static void showWinningResult(HashMap<Rank, Integer> resultMap){
+
     }
 }
