@@ -29,10 +29,6 @@ public enum Rank {
         return correctCount;
     }
 
-    public int getBonusCount() {
-        return bonusCount;
-    }
-
     public long getPrize() {
         return prize;
     }
