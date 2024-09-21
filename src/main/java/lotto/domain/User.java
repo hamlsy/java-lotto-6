@@ -20,6 +20,10 @@ public class User {
         lottos.add(lotto);
     }
 
+    public int getBuyAmount() {
+        return buyAmount;
+    }
+
     public List<Lotto> getLottos(){
         return this.lottos;
     }

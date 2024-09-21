@@ -54,6 +54,7 @@ public class Validation {
    public static void validateBonusNumberDuplecatedInWinningNumber(int bonusNumeber, List<Integer> winningNumbers){
         if(winningNumbers.contains(bonusNumeber)){
             ErrorView.duplicatedBonusNumberInWinningNumbers();
+            throw new IllegalArgumentException();
         }
    }
 

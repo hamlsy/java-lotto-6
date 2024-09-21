@@ -30,7 +30,7 @@ public class LottoService {
     private static final int LOTTO_PRICE_UNIT = 1_000;
 
     public void createLottos(){
-        buyLottos(moneyToCount(inputMoney()));
+        buyLottos();
     }
 
     public int inputMoney(){
@@ -45,8 +45,9 @@ public class LottoService {
         return money/LOTTO_PRICE_UNIT;
     }
 
-    public void buyLottos(int count){
-        this.user = new User(count);
+    public void buyLottos(){
+        this.user = new User(inputMoney());
+        int count = moneyToCount(user.getBuyAmount());
         for(int i = 0; i < count; i++){
             user.buyLotto(
                     new Lotto(getRandomLottoNum())
@@ -92,9 +93,9 @@ public class LottoService {
         return bonusNumber;
     }
 
-    //todo 결과 출력 단계, 당첨 통계 및 수익률 계산 부분
     public void resultLotto(){
         //로또 결과 출력
+        OutputView.printWinStatisticMessage();
         HashMap<Rank, Integer> resultMap = getWinningResult(user.getLottos());
         for(Rank rank : Rank.values()){
             if(rank.getCorrectCount() >= 3){
@@ -103,6 +104,7 @@ public class LottoService {
         }
 
         // 수익률 출력
+        OutputView.showTotalProfitRate(getProfitRate(user.getBuyAmount(), resultMap));
     }
 
     private HashMap<Rank, Integer> getWinningResult(List<Lotto> lottos){
@@ -135,9 +137,26 @@ public class LottoService {
 
     private int getBonusCount(int bonusNumber, List<Integer> lottoNumbers){
         int bonusCount = 0;
-        if(lottoNumbers.contains(bonusCount)){
+        if(lottoNumbers.contains(bonusNumber)){
             bonusCount = 1;
         }
         return bonusCount;
+    }
+
+    // 수익률 계산
+
+    private double getProfitRate(int buyAmount, HashMap<Rank, Integer> winningResult){
+        long profit = getSumWinningProfilt(winningResult);
+
+        return (profit/(double)buyAmount)*100;
+    }
+
+    private long getSumWinningProfilt(HashMap<Rank, Integer> winningResult){
+        long profit = 0;
+
+        for(Rank rank : Rank.values()){
+            profit += rank.getPrize() * winningResult.get(rank);
+        }
+        return profit;
     }
 }

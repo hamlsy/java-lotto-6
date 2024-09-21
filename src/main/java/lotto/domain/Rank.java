@@ -52,6 +52,6 @@ public enum Rank {
                 return rank;
             }
         }
-        return null;
+        return Rank.NO_RANK_ZERO;
     }
 }
