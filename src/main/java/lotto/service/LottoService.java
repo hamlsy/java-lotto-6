@@ -42,7 +42,7 @@ public class LottoService {
     }
 
     public void startLotto(List<Integer> winningNumbers, int bonusNumber){
-        Validation.validateBonusNumberDuplecatedInWinningNumber(bonusNumber, winningNumbers);
+        Validation.validateBonusNumberNotInWinningNumber(bonusNumber, winningNumbers);
         createLottoGame(winningNumbers, bonusNumber);
     }
 

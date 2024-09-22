@@ -3,6 +3,7 @@ package lotto.validation;
 import lotto.view.ErrorView;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Validation {
 
@@ -44,6 +45,7 @@ public class Validation {
     public static void validateWinningNumbers(List<Integer> winningNumbers){
         validateWinningNumbersSize(winningNumbers);
         validateWinningNumbersRange(winningNumbers);
+        validateWinningNumbersDuplicated(winningNumbers);
     }
    public static void validateWinningNumbersSize(List<Integer> winningNumbers){
        if(winningNumbers.size() != WINNING_NUMBER_MAX_SIZE){
@@ -56,7 +58,14 @@ public class Validation {
         winningNumbers.forEach(winningNumber -> validateLottoNumberRange(winningNumber));
    }
 
-   public static void validateBonusNumberDuplecatedInWinningNumber(int bonusNumber, List<Integer> winningNumbers){
+   public static void validateWinningNumbersDuplicated(List<Integer> winningNumbers){
+        if(winningNumbers.size() != winningNumbers.stream().distinct().count()){
+            ErrorView.duplicatedWinningNumbers();
+            throw new IllegalStateException();
+        }
+   }
+
+   public static void validateBonusNumberNotInWinningNumber(int bonusNumber, List<Integer> winningNumbers){
         if(winningNumbers.contains(bonusNumber)){
             ErrorView.duplicatedBonusNumberInWinningNumbers();
             throw new IllegalArgumentException();
