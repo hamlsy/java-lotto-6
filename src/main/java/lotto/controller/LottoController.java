@@ -1,10 +1,10 @@
 package lotto.controller;
 
+import lotto.domain.LottoGame;
 import lotto.domain.Rank;
 import lotto.domain.User;
 import lotto.service.LottoService;
 import lotto.utils.Utils;
-import lotto.validation.Validation;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
@@ -20,8 +20,11 @@ import static camp.nextstep.edu.missionutils.Console.readLine;
  */
 public class LottoController {
 
+    private final int MINIMUM_WINNING_CORRECT_COUNT = 3;
+
     private LottoService lottoService;
     private User user;
+    private LottoGame lottoGame;
 
     public LottoController(LottoService lottoService) {
         this.lottoService = lottoService;
@@ -41,7 +44,11 @@ public class LottoController {
 
     private void buyLottos(){
         user = new User(inputMoney());
-        OutputView.buyLottoMessage(Utils.moneyToCount(user.getBuyAmount()));
+        OutputView.buyLottoMessage(getUserBuyLottoCount());
+    }
+
+    private int getUserBuyLottoCount(){
+        return Utils.moneyToCount(user.getBuyAmount());
     }
 
     private int inputMoney(){
@@ -51,38 +58,42 @@ public class LottoController {
     }
 
     public void startLotto(){
-       lottoService.startLotto(inputWinningNumbers(), inputBonusNumber());
+        List<Integer> winningNumbers = inputWinningNumbers();
+        int bonusNumber = inputBonusNumber();
+        lottoGame = new LottoGame(winningNumbers, bonusNumber);
     }
 
     private List<Integer> inputWinningNumbers(){
         InputView.printInputWinningNumbersMessage();
         String input = readLine().trim();
-        List<Integer> winningNumbers = Utils.stringToIntegerList(input);
-        Validation.validateWinningNumbers(winningNumbers);
-
-        return winningNumbers;
+        return Utils.stringToIntegerList(input);
     }
 
     private int inputBonusNumber(){
         InputView.printInputBonusNumberMessage();
         String input = readLine().trim();
-        int bonusNumber = Utils.stringToInteger(input);
-        Validation.validateLottoNumberRange(bonusNumber);
-
-        return bonusNumber;
+        return Utils.stringToInteger(input);
     }
 
     public void resultLotto(){
         OutputView.printWinStatisticMessage();
-        printResultLotto(lottoService.getWinningResult(user.getLottos()));
-        long profit = lottoService.getTotalWinningProfilt(user);
+        printResultLotto(getWinningResult());
+        long profit = getWinningProfit();
         int buyAmount = user.getBuyAmount();
         printTotalProfitRate(profit, buyAmount);
     }
 
+    private HashMap<Rank, Integer> getWinningResult(){
+        return lottoService.getWinningResult(lottoGame, user.getLottos());
+    }
+
+    private long getWinningProfit(){
+        return lottoService.getTotalWinningProfilt(lottoGame, user.getLottos());
+    }
+
     private void printResultLotto(HashMap<Rank, Integer> resultMap){
         for(Rank rank : Rank.values()){
-            if(rank.getCorrectCount() >= 3){
+            if(rank.getCorrectCount() >= MINIMUM_WINNING_CORRECT_COUNT){
                 OutputView.showWinningResult(rank, resultMap.get(rank));
             }
         }

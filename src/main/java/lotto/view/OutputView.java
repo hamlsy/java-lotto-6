@@ -4,7 +4,6 @@ import lotto.domain.Lotto;
 import lotto.domain.Rank;
 import lotto.utils.Utils;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**

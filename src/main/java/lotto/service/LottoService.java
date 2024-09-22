@@ -21,7 +21,6 @@ import static camp.nextstep.edu.missionutils.Console.readLine;
 로또 서비스 코드
  */
 public class LottoService {
-    private LottoGame lottoGame;
 
     private static final int LOTTO_MIN_NUM = 1;
     private static final int LOTTO_MAX_NUM = 45;
@@ -30,10 +29,12 @@ public class LottoService {
     public void buyLottos(User user){
         int count = Utils.moneyToCount(user.getBuyAmount());
         for(int i = 0; i < count; i++){
-            user.buyLotto(
-                    new Lotto(getRandomLottoNum())
-            );
+            user.buyLotto(createRandomLotto());
         }
+    }
+
+    private Lotto createRandomLotto(){
+        return new Lotto(getRandomLottoNum());
     }
 
     private List<Integer> getRandomLottoNum(){
@@ -41,17 +42,8 @@ public class LottoService {
                 .sorted().collect(Collectors.toList());
     }
 
-    public void startLotto(List<Integer> winningNumbers, int bonusNumber){
-        Validation.validateBonusNumberNotInWinningNumber(bonusNumber, winningNumbers);
-        createLottoGame(winningNumbers, bonusNumber);
-    }
-
-    private void createLottoGame(List<Integer> winningNumbers, int bonusNumber){
-        this.lottoGame = new LottoGame(winningNumbers, bonusNumber);
-    }
-
-    public long getTotalWinningProfilt(User user){
-        HashMap<Rank, Integer> winningResult = getWinningResult(user.getLottos());
+    public long getTotalWinningProfilt(LottoGame lottoGame, List<Lotto> lottos){
+        HashMap<Rank, Integer> winningResult = getWinningResult(lottoGame, lottos);
         long profit = 0;
 
         for(Rank rank : Rank.values()){
@@ -60,7 +52,7 @@ public class LottoService {
         return profit;
     }
 
-    public HashMap<Rank, Integer> getWinningResult(List<Lotto> lottos){
+    public HashMap<Rank, Integer> getWinningResult(LottoGame lottoGame, List<Lotto> lottos){
         HashMap<Rank, Integer> resultMap = Rank.initRank();
         for(Lotto lotto : lottos){
             Rank rank = getRank(lottoGame, lotto);
@@ -70,10 +62,8 @@ public class LottoService {
     }
 
     private Rank getRank(LottoGame lottoGame, Lotto lotto){
-        List<Integer> winningNumbers = lottoGame.getWinningNumbers();
-        int bonusNumber = lottoGame.getBonusNumber();
-        int correctCount = getCorrectCount(winningNumbers, lotto.getNumbers());
-        int bonusCount = getBonusCount(bonusNumber, lotto.getNumbers());
+        int correctCount = getCorrectCount(lottoGame.getWinningNumbers(), lotto.getNumbers());
+        int bonusCount = getBonusCount(lottoGame.getBonusNumber(), lotto.getNumbers());
 
         return Rank.getRank(correctCount, bonusCount);
     }
@@ -89,12 +79,7 @@ public class LottoService {
     }
 
     private int getBonusCount(int bonusNumber, List<Integer> lottoNumbers){
-        int bonusCount = 0;
-        if(lottoNumbers.contains(bonusNumber)){
-            bonusCount = 1;
-        }
-        return bonusCount;
+        return lottoNumbers.contains(bonusNumber) ? 1 : 0;
     }
-
 
 }

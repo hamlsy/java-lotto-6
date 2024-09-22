@@ -41,7 +41,6 @@ public enum Rank {
         return inithashMap;
     }
 
-    //Get Rank
     public static Rank getRank(int correctCount, int bonusCount){
         for(Rank rank: Rank.values()){
             if(rank.correctCount == correctCount && rank.bonusCount == bonusCount){
