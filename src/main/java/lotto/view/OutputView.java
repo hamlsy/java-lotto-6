@@ -13,7 +13,8 @@ public class OutputView {
     private static final String BUY_LOTTO_MESSAGE = "%d개를 구매했습니다. \n";
     private static final String WIN_STATISTIC_MESSAGE = "당첨 통계\n---";
     private static final String WINNING_RESULT_MESSAGE = "%d개 일치 (%s원) - %d개\n";
-    private static final String TOTAL_PROFIT_RATE_MESSAGE = "총 수익률은 %.2f%%입니다.";
+    private static final String WINNING_BONUS_RESULT_MESSAGE = "%d개 일치, 보너스 볼 일치 (%s원) - %d개\n";
+    private static final String TOTAL_PROFIT_RATE_MESSAGE = "총 수익률은 %.1f%%입니다.";
 
     public static void buyLottoMessage(int num){
         System.out.printf(BUY_LOTTO_MESSAGE, num);
@@ -29,7 +30,9 @@ public class OutputView {
     }
 
     public static void showWinningResult(Rank rank, int winCount){
-        System.out.printf(WINNING_RESULT_MESSAGE, rank.getCorrectCount(),
+        String winningResultMessage = rank == Rank.SECOND_RANK ?
+                WINNING_BONUS_RESULT_MESSAGE : WINNING_RESULT_MESSAGE;
+        System.out.printf(winningResultMessage, rank.getCorrectCount(),
                 Utils.longToFormattedNumber(rank.getPrize()), winCount);
     }
 

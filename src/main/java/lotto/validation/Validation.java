@@ -41,6 +41,13 @@ public class Validation {
         }
     }
 
+    public static void validateLottoNumbersDuplicated(List<Integer> lottoNumbers){
+        if(isDuplicatedList(lottoNumbers)){
+            ErrorView.duplicatedLottoNumbers();
+            throw new IllegalArgumentException();
+        }
+    }
+
     public static void validateWinningNumbers(List<Integer> winningNumbers){
         validateWinningNumbersSize(winningNumbers);
         validateWinningNumbersRange(winningNumbers);
@@ -58,10 +65,17 @@ public class Validation {
    }
 
    public static void validateWinningNumbersDuplicated(List<Integer> winningNumbers){
-        if(winningNumbers.size() != winningNumbers.stream().distinct().count()){
+        if(isDuplicatedList(winningNumbers)){
             ErrorView.duplicatedWinningNumbers();
-            throw new IllegalStateException();
+            throw new IllegalArgumentException();
         }
+   }
+
+   private static boolean isDuplicatedList(List<Integer> numberList){
+        if(numberList.size() != numberList.stream().distinct().count()){
+            return true;
+        }
+        return false;
    }
 
    public static void validateBonusNumberNotInWinningNumber(int bonusNumber, List<Integer> winningNumbers){

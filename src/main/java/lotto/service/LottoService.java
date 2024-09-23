@@ -6,17 +6,11 @@ import lotto.domain.LottoGame;
 import lotto.domain.Rank;
 import lotto.domain.User;
 import lotto.utils.Utils;
-import lotto.validation.Validation;
-import lotto.view.InputView;
-import lotto.view.OutputView;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static camp.nextstep.edu.missionutils.Console.readLine;
 /**
 로또 서비스 코드
  */

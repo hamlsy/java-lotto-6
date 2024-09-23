@@ -1,5 +1,6 @@
 package lotto.utils;
 
+import camp.nextstep.edu.missionutils.Randoms;
 import lotto.validation.Validation;
 
 import java.util.Arrays;
@@ -30,13 +31,13 @@ public class Utils {
     }
 
     public static int moneyToCount(int money){
-        Validation.validateMoneyRange(money);
-        Validation.validateDivideMoney(money);
         return money/LOTTO_PRICE_UNIT;
     }
 
     public static double getProfitRate(long profit, int buyAmount){
         return (profit/(double)buyAmount)*RATE_VALUE;
     }
+
+
 
 }

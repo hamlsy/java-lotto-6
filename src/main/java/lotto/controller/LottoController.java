@@ -58,9 +58,7 @@ public class LottoController {
     }
 
     public void startLotto(){
-        List<Integer> winningNumbers = inputWinningNumbers();
-        int bonusNumber = inputBonusNumber();
-        lottoGame = new LottoGame(winningNumbers, bonusNumber);
+        lottoGame = new LottoGame(inputWinningNumbers(), inputBonusNumber());
     }
 
     private List<Integer> inputWinningNumbers(){

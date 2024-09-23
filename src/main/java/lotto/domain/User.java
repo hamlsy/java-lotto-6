@@ -1,7 +1,8 @@
 package lotto.domain;
 
+import lotto.validation.Validation;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -9,10 +10,11 @@ import java.util.List;
 */
 public class User {
     private List<Lotto> lottos = new ArrayList<>();
-    private HashMap<Rank, Integer> lottoResult = new HashMap<>();
     private int buyAmount;
 
     public User(int buyAmount) {
+        Validation.validateMoneyRange(buyAmount);
+        Validation.validateDivideMoney(buyAmount);
         this.buyAmount = buyAmount;
     }
 
@@ -28,9 +30,6 @@ public class User {
         return this.lottos;
     }
 
-    public HashMap<Rank, Integer> getLottoResult(){
-        return lottoResult;
-    }
 
 
 }
