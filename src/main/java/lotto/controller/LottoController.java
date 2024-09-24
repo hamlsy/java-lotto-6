@@ -75,18 +75,17 @@ public class LottoController {
 
     public void resultLotto(){
         OutputView.printWinStatisticMessage();
-        printResultLotto(getWinningResult());
-        long profit = getWinningProfit();
-        int buyAmount = user.getBuyAmount();
-        printTotalProfitRate(profit, buyAmount);
+        getWinningResult();
+        printResultLotto(user.getWinningResultMap());
+        printTotalProfitRate(getWinningProfit(), user.getBuyAmount());
     }
 
-    private HashMap<Rank, Integer> getWinningResult(){
-        return lottoService.getWinningResult(lottoGame, user.getLottos());
+    private void getWinningResult(){
+        lottoService.getWinningResult(lottoGame, user);
     }
 
     private long getWinningProfit(){
-        return lottoService.getTotalWinningProfilt(lottoGame, user.getLottos());
+        return lottoService.getTotalWinningProfilt(user);
     }
 
     private void printResultLotto(HashMap<Rank, Integer> resultMap){

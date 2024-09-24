@@ -36,23 +36,20 @@ public class LottoService {
                 .sorted().collect(Collectors.toList());
     }
 
-    public long getTotalWinningProfilt(LottoGame lottoGame, List<Lotto> lottos){
-        HashMap<Rank, Integer> winningResult = getWinningResult(lottoGame, lottos);
+    public long getTotalWinningProfilt(User user){
         long profit = 0;
-
         for(Rank rank : Rank.values()){
-            profit += rank.getPrize() * winningResult.get(rank);
+            profit += rank.getPrize() * user.getWinningResultMap().get(rank);
         }
         return profit;
     }
 
-    public HashMap<Rank, Integer> getWinningResult(LottoGame lottoGame, List<Lotto> lottos){
-        HashMap<Rank, Integer> resultMap = Rank.initRank();
-        for(Lotto lotto : lottos){
+    public void getWinningResult(LottoGame lottoGame, User user){
+        HashMap<Rank, Integer> resultMap = user.getWinningResultMap();
+        for(Lotto lotto : user.getLottos()){
             Rank rank = getRank(lottoGame, lotto);
             resultMap.put(rank, resultMap.get(rank)+1);
         }
-        return resultMap;
     }
 
     private Rank getRank(LottoGame lottoGame, Lotto lotto){

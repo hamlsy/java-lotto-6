@@ -38,6 +38,4 @@ public class Utils {
         return (profit/(double)buyAmount)*RATE_VALUE;
     }
 
-
-
 }

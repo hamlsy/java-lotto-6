@@ -12,7 +12,6 @@ public class Validation {
     private static final int LOTTO_PRICE_UNIT = 1_000;
     private static final String NONE_INPUT_STRING = "";
 
-
     public static void validateStringToInteger(String str){
         if(!str.chars().allMatch(Character::isDigit) || str.equals(NONE_INPUT_STRING)){
             ErrorView.stringToIntegerError();
